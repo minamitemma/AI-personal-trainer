@@ -1,0 +1,61 @@
+{
+  "dart.getDartSdkCommand": {
+    "executable": "zsh",
+    "args": [
+      "-c",
+      "sdk=$(mise where flutter) || exit 1; echo \"$sdk/bin/cache/dart-sdk\""
+    ]
+  },
+  "dart.getFlutterSdkCommand": {
+    "executable": "mise",
+    "args": ["where", "flutter"]
+  },
+  "mise.configureExtensionsUseSymLinks": true,
+  "mise.configureExtensionsAutomatically": false,
+  "mise.updateOpenTerminalsEnvAutomatically": true,
+  "evenBetterToml.schema.associations": {
+    "mise-tasks/*.toml": "https://mise.jdx.dev/schema/mise-task.json"
+  },
+  "dart.hotReloadPatterns": ["**/assets/**", "**/*.arb"],
+  "dart.flutterGenerateLocalizationsOnSave": "never",
+  "git.ignoredRepositories": ["**/.dart_tool", "**/.pub-cache"],
+  "search.exclude": {
+    "**/.dart_tool": true,
+    "**/*.config.dart": true,
+    "**/*.freezed.dart": true,
+    "**/*.g.dart": true,
+    "**/*.gen.dart": true,
+    "**/*.gr.dart": true,
+    "**/*.gql.dart": true
+  },
+  "files.watcherExclude": {
+    "**/.dart_tool": true,
+    "**/*.config.dart": true,
+    "**/*.freezed.dart": true,
+    "**/*.g.dart": true,
+    "**/*.gen.dart": true,
+    "**/*.gr.dart": true,
+    "**/*.gql.dart": true
+  },
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit",
+      "quickfix.insertSemicolon": "explicit"
+    },
+    "editor.rulers": [80]
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "dart.lineLength": 80,
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    ".gitignore": ".gitattributes, .gitmodules, .gitmessage, .mailmap, .git-blame*",
+    "readme.*": "authors, backers.md, changelog*, citation*, code_of_conduct.md, codeowners, contributing.md, contributors, copying, credits, governance.md, history.md, license*, maintainers, readme*, security.md, sponsors.md",
+    "*.dart": "${capture}.g.dart, ${capture}.freezed.dart",
+    "pubspec.yaml": ".flutter-plugins, .packages, .dart_tool, .flutter-plugins-dependencies, .metadata, .packages, pubspec.lock, build.yaml, analysis_options.yaml, all_lint_rules.yaml"
+  }
+}
