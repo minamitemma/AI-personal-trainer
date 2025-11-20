@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'plan_providers.dart';
+part of 'dio_plan_repository.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -24,26 +24,5 @@ final planRepositoryProvider = AutoDisposeProvider<PlanRepository>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef PlanRepositoryRef = AutoDisposeProviderRef<PlanRepository>;
-String _$planGenerationUseCaseHash() =>
-    r'b18c6d56dcc1661c00067afaf6d5c8fb3fb2a5dd';
-
-/// See also [planGenerationUseCase].
-@ProviderFor(planGenerationUseCase)
-final planGenerationUseCaseProvider =
-    AutoDisposeProvider<PlanGenerationUseCase>.internal(
-      planGenerationUseCase,
-      name: r'planGenerationUseCaseProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$planGenerationUseCaseHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef PlanGenerationUseCaseRef =
-    AutoDisposeProviderRef<PlanGenerationUseCase>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

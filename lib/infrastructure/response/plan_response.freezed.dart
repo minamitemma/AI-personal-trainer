@@ -15,8 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PlanResponse {
 
-@JsonKey(name: 'weekly_workouts') List<Map<String, dynamic>> get trainingMenuJson;@JsonKey(name: 'sample_meals') List<Map<String, dynamic>> get nutritionPlanJson;@JsonKey(name: 'plan_id') String get planId;@JsonKey(name: 'goal_summary') String get goalSummary;// 🚨 追加: カロリーとマクロ栄養素を受け取るフィールド 🚨
-@JsonKey(name: 'calorieTarget') int get calorieTarget;@JsonKey(name: 'macronutrients') Map<String, dynamic> get macronutrients;
+@JsonKey(name: 'weekly_workouts') List<Map<String, dynamic>> get trainingMenuJson;@JsonKey(name: 'sample_meals') List<Map<String, dynamic>> get nutritionPlanJson;@JsonKey(name: 'plan_id') String get planId;@JsonKey(name: 'goal_summary') String get goalSummary;@JsonKey(name: 'calorieTarget') int get calorieTarget;@JsonKey(name: 'macronutrients') Map<String, dynamic> get macronutrients;
 /// Create a copy of PlanResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -234,7 +233,6 @@ class _PlanResponse implements PlanResponse {
 
 @override@JsonKey(name: 'plan_id') final  String planId;
 @override@JsonKey(name: 'goal_summary') final  String goalSummary;
-// 🚨 追加: カロリーとマクロ栄養素を受け取るフィールド 🚨
 @override@JsonKey(name: 'calorieTarget') final  int calorieTarget;
  final  Map<String, dynamic> _macronutrients;
 @override@JsonKey(name: 'macronutrients') Map<String, dynamic> get macronutrients {

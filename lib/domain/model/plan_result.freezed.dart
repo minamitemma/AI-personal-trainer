@@ -15,9 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PlanResult {
 
-// 🚨 修正: fromJson関数を明示的に指定 🚨
-@JsonKey(fromJson: NutritionPlan.fromJson) NutritionPlan get nutritionPlan;// 🚨 修正: fromJson関数を明示的に指定 🚨
-@JsonKey(fromJson: TrainingMenu.fromJson) TrainingMenu get trainingMenu;
+ NutritionPlan get nutritionPlan; TrainingMenu get trainingMenu; DateTime get createdAt; UserInput get inputData;
 /// Create a copy of PlanResult
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -30,16 +28,16 @@ $PlanResultCopyWith<PlanResult> get copyWith => _$PlanResultCopyWithImpl<PlanRes
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PlanResult&&(identical(other.nutritionPlan, nutritionPlan) || other.nutritionPlan == nutritionPlan)&&(identical(other.trainingMenu, trainingMenu) || other.trainingMenu == trainingMenu));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PlanResult&&(identical(other.nutritionPlan, nutritionPlan) || other.nutritionPlan == nutritionPlan)&&(identical(other.trainingMenu, trainingMenu) || other.trainingMenu == trainingMenu)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.inputData, inputData) || other.inputData == inputData));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,nutritionPlan,trainingMenu);
+int get hashCode => Object.hash(runtimeType,nutritionPlan,trainingMenu,createdAt,inputData);
 
 @override
 String toString() {
-  return 'PlanResult(nutritionPlan: $nutritionPlan, trainingMenu: $trainingMenu)';
+  return 'PlanResult(nutritionPlan: $nutritionPlan, trainingMenu: $trainingMenu, createdAt: $createdAt, inputData: $inputData)';
 }
 
 
@@ -50,11 +48,11 @@ abstract mixin class $PlanResultCopyWith<$Res>  {
   factory $PlanResultCopyWith(PlanResult value, $Res Function(PlanResult) _then) = _$PlanResultCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(fromJson: NutritionPlan.fromJson) NutritionPlan nutritionPlan,@JsonKey(fromJson: TrainingMenu.fromJson) TrainingMenu trainingMenu
+ NutritionPlan nutritionPlan, TrainingMenu trainingMenu, DateTime createdAt, UserInput inputData
 });
 
 
-$NutritionPlanCopyWith<$Res> get nutritionPlan;$TrainingMenuCopyWith<$Res> get trainingMenu;
+$NutritionPlanCopyWith<$Res> get nutritionPlan;$TrainingMenuCopyWith<$Res> get trainingMenu;$UserInputCopyWith<$Res> get inputData;
 
 }
 /// @nodoc
@@ -67,11 +65,13 @@ class _$PlanResultCopyWithImpl<$Res>
 
 /// Create a copy of PlanResult
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? nutritionPlan = null,Object? trainingMenu = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? nutritionPlan = null,Object? trainingMenu = null,Object? createdAt = null,Object? inputData = null,}) {
   return _then(_self.copyWith(
 nutritionPlan: null == nutritionPlan ? _self.nutritionPlan : nutritionPlan // ignore: cast_nullable_to_non_nullable
 as NutritionPlan,trainingMenu: null == trainingMenu ? _self.trainingMenu : trainingMenu // ignore: cast_nullable_to_non_nullable
-as TrainingMenu,
+as TrainingMenu,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,inputData: null == inputData ? _self.inputData : inputData // ignore: cast_nullable_to_non_nullable
+as UserInput,
   ));
 }
 /// Create a copy of PlanResult
@@ -91,6 +91,15 @@ $TrainingMenuCopyWith<$Res> get trainingMenu {
   
   return $TrainingMenuCopyWith<$Res>(_self.trainingMenu, (value) {
     return _then(_self.copyWith(trainingMenu: value));
+  });
+}/// Create a copy of PlanResult
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserInputCopyWith<$Res> get inputData {
+  
+  return $UserInputCopyWith<$Res>(_self.inputData, (value) {
+    return _then(_self.copyWith(inputData: value));
   });
 }
 }
@@ -174,10 +183,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(fromJson: NutritionPlan.fromJson)  NutritionPlan nutritionPlan, @JsonKey(fromJson: TrainingMenu.fromJson)  TrainingMenu trainingMenu)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( NutritionPlan nutritionPlan,  TrainingMenu trainingMenu,  DateTime createdAt,  UserInput inputData)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PlanResult() when $default != null:
-return $default(_that.nutritionPlan,_that.trainingMenu);case _:
+return $default(_that.nutritionPlan,_that.trainingMenu,_that.createdAt,_that.inputData);case _:
   return orElse();
 
 }
@@ -195,10 +204,10 @@ return $default(_that.nutritionPlan,_that.trainingMenu);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(fromJson: NutritionPlan.fromJson)  NutritionPlan nutritionPlan, @JsonKey(fromJson: TrainingMenu.fromJson)  TrainingMenu trainingMenu)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( NutritionPlan nutritionPlan,  TrainingMenu trainingMenu,  DateTime createdAt,  UserInput inputData)  $default,) {final _that = this;
 switch (_that) {
 case _PlanResult():
-return $default(_that.nutritionPlan,_that.trainingMenu);case _:
+return $default(_that.nutritionPlan,_that.trainingMenu,_that.createdAt,_that.inputData);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -215,10 +224,10 @@ return $default(_that.nutritionPlan,_that.trainingMenu);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(fromJson: NutritionPlan.fromJson)  NutritionPlan nutritionPlan, @JsonKey(fromJson: TrainingMenu.fromJson)  TrainingMenu trainingMenu)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( NutritionPlan nutritionPlan,  TrainingMenu trainingMenu,  DateTime createdAt,  UserInput inputData)?  $default,) {final _that = this;
 switch (_that) {
 case _PlanResult() when $default != null:
-return $default(_that.nutritionPlan,_that.trainingMenu);case _:
+return $default(_that.nutritionPlan,_that.trainingMenu,_that.createdAt,_that.inputData);case _:
   return null;
 
 }
@@ -230,13 +239,13 @@ return $default(_that.nutritionPlan,_that.trainingMenu);case _:
 @JsonSerializable()
 
 class _PlanResult implements PlanResult {
-  const _PlanResult({@JsonKey(fromJson: NutritionPlan.fromJson) required this.nutritionPlan, @JsonKey(fromJson: TrainingMenu.fromJson) required this.trainingMenu});
+  const _PlanResult({required this.nutritionPlan, required this.trainingMenu, required this.createdAt, required this.inputData});
   factory _PlanResult.fromJson(Map<String, dynamic> json) => _$PlanResultFromJson(json);
 
-// 🚨 修正: fromJson関数を明示的に指定 🚨
-@override@JsonKey(fromJson: NutritionPlan.fromJson) final  NutritionPlan nutritionPlan;
-// 🚨 修正: fromJson関数を明示的に指定 🚨
-@override@JsonKey(fromJson: TrainingMenu.fromJson) final  TrainingMenu trainingMenu;
+@override final  NutritionPlan nutritionPlan;
+@override final  TrainingMenu trainingMenu;
+@override final  DateTime createdAt;
+@override final  UserInput inputData;
 
 /// Create a copy of PlanResult
 /// with the given fields replaced by the non-null parameter values.
@@ -251,16 +260,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PlanResult&&(identical(other.nutritionPlan, nutritionPlan) || other.nutritionPlan == nutritionPlan)&&(identical(other.trainingMenu, trainingMenu) || other.trainingMenu == trainingMenu));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PlanResult&&(identical(other.nutritionPlan, nutritionPlan) || other.nutritionPlan == nutritionPlan)&&(identical(other.trainingMenu, trainingMenu) || other.trainingMenu == trainingMenu)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.inputData, inputData) || other.inputData == inputData));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,nutritionPlan,trainingMenu);
+int get hashCode => Object.hash(runtimeType,nutritionPlan,trainingMenu,createdAt,inputData);
 
 @override
 String toString() {
-  return 'PlanResult(nutritionPlan: $nutritionPlan, trainingMenu: $trainingMenu)';
+  return 'PlanResult(nutritionPlan: $nutritionPlan, trainingMenu: $trainingMenu, createdAt: $createdAt, inputData: $inputData)';
 }
 
 
@@ -271,11 +280,11 @@ abstract mixin class _$PlanResultCopyWith<$Res> implements $PlanResultCopyWith<$
   factory _$PlanResultCopyWith(_PlanResult value, $Res Function(_PlanResult) _then) = __$PlanResultCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(fromJson: NutritionPlan.fromJson) NutritionPlan nutritionPlan,@JsonKey(fromJson: TrainingMenu.fromJson) TrainingMenu trainingMenu
+ NutritionPlan nutritionPlan, TrainingMenu trainingMenu, DateTime createdAt, UserInput inputData
 });
 
 
-@override $NutritionPlanCopyWith<$Res> get nutritionPlan;@override $TrainingMenuCopyWith<$Res> get trainingMenu;
+@override $NutritionPlanCopyWith<$Res> get nutritionPlan;@override $TrainingMenuCopyWith<$Res> get trainingMenu;@override $UserInputCopyWith<$Res> get inputData;
 
 }
 /// @nodoc
@@ -288,11 +297,13 @@ class __$PlanResultCopyWithImpl<$Res>
 
 /// Create a copy of PlanResult
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? nutritionPlan = null,Object? trainingMenu = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? nutritionPlan = null,Object? trainingMenu = null,Object? createdAt = null,Object? inputData = null,}) {
   return _then(_PlanResult(
 nutritionPlan: null == nutritionPlan ? _self.nutritionPlan : nutritionPlan // ignore: cast_nullable_to_non_nullable
 as NutritionPlan,trainingMenu: null == trainingMenu ? _self.trainingMenu : trainingMenu // ignore: cast_nullable_to_non_nullable
-as TrainingMenu,
+as TrainingMenu,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,inputData: null == inputData ? _self.inputData : inputData // ignore: cast_nullable_to_non_nullable
+as UserInput,
   ));
 }
 
@@ -313,6 +324,15 @@ $TrainingMenuCopyWith<$Res> get trainingMenu {
   
   return $TrainingMenuCopyWith<$Res>(_self.trainingMenu, (value) {
     return _then(_self.copyWith(trainingMenu: value));
+  });
+}/// Create a copy of PlanResult
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserInputCopyWith<$Res> get inputData {
+  
+  return $UserInputCopyWith<$Res>(_self.inputData, (value) {
+    return _then(_self.copyWith(inputData: value));
   });
 }
 }

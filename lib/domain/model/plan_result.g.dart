@@ -13,10 +13,14 @@ _PlanResult _$PlanResultFromJson(Map<String, dynamic> json) => _PlanResult(
   trainingMenu: TrainingMenu.fromJson(
     json['trainingMenu'] as Map<String, dynamic>,
   ),
+  createdAt: DateTime.parse(json['createdAt'] as String),
+  inputData: UserInput.fromJson(json['inputData'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$PlanResultToJson(_PlanResult instance) =>
     <String, dynamic>{
       'nutritionPlan': instance.nutritionPlan,
       'trainingMenu': instance.trainingMenu,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'inputData': instance.inputData,
     };

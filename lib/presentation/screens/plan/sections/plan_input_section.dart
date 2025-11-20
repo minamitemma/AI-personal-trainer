@@ -33,11 +33,21 @@ class _PlanInputSectionState extends State<PlanInputSection> {
   int _goalWeight = 65;
   int _age = 25;
   String _experience = '初心者';
-  double _days = 3;
+  int _gymDays = 2;
+  int _homeDays = 1;
   String _diet = '特になし';
   String _additionalRequest = ''; // アドバイスモード用
 
   String _targetDuration = '2ヶ月';
+
+  int _benchWeight = 0;
+  int _benchReps = 0;
+
+  int _squatWeight = 0;
+  int _squatReps = 0;
+
+  int _deadliftWeight = 0;
+  int _deadliftReps = 0;
 
   // 選択肢リスト
   final List<String> _durationOptions = [
@@ -61,9 +71,16 @@ class _PlanInputSectionState extends State<PlanInputSection> {
       _goalWeight = input.goalWeight;
       _age = input.age;
       _experience = input.experienceLevel;
-      _days = input.availableDays.toDouble();
+      _gymDays = input.gymDays;
+      _homeDays = input.homeDays;
       _diet = input.dietRestriction;
       _additionalRequest = input.additionalRequest;
+      _benchWeight = input.benchPressWeight;
+      _squatWeight = input.squatWeight;
+      _deadliftWeight = input.squatWeight;
+      _benchReps = input.benchPressReps;
+      _squatReps = input.squatReps;
+      _deadliftReps = input.deadliftReps;
 
       if (input.targetDuration.isNotEmpty &&
           _durationOptions.contains(input.targetDuration)) {
@@ -148,11 +165,53 @@ class _PlanInputSectionState extends State<PlanInputSection> {
 
               const SizedBox(height: 24),
 
+              Theme(
+                data: Theme.of(
+                  context,
+                ).copyWith(dividerColor: Colors.transparent),
+                child: ExpansionTile(
+                  title: const SectionHeader(
+                    title: '💪 筋力データ (任意)',
+                    icon: Icons.fitness_center,
+                  ),
+                  tilePadding: EdgeInsets.zero,
+                  children: [
+                    const Text(
+                      '普段行っているセットの重量と回数を入力してください。AIが推定MAX重量を計算してプランを作ります。',
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+                    const SizedBox(height: 12),
+
+                    // 🚨 ここでヘルパーを使う
+                    _buildStrengthInputRow(
+                      'ベンチプレス',
+                      _benchWeight,
+                      (v) => _benchWeight = v,
+                      _benchReps,
+                      (v) => _benchReps = v,
+                    ),
+                    _buildStrengthInputRow(
+                      'スクワット',
+                      _squatWeight,
+                      (v) => _squatWeight = v,
+                      _squatReps,
+                      (v) => _squatReps = v,
+                    ),
+                    _buildStrengthInputRow(
+                      'デッドリフト',
+                      _deadliftWeight,
+                      (v) => _deadliftWeight = v,
+                      _deadliftReps,
+                      (v) => _deadliftReps = v,
+                    ),
+                  ],
+                ),
+              ),
               // --- 2. 目標と経験 ---
               const SectionHeader(title: '🎯 目標と期間', icon: Icons.flag),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                initialValue: _goalType,
+                value: _goalType,
                 decoration: _inputDecoration('現在の目標'),
                 items:
                     ['減量', '筋肥大', '健康維持', 'アスリート']
@@ -163,7 +222,7 @@ class _PlanInputSectionState extends State<PlanInputSection> {
               const SizedBox(height: 12),
 
               DropdownButtonFormField<String>(
-                initialValue: _targetDuration,
+                value: _targetDuration,
                 decoration: _inputDecoration('目標達成までの期間'),
                 items:
                     _durationOptions
@@ -174,7 +233,7 @@ class _PlanInputSectionState extends State<PlanInputSection> {
 
               const SizedBox(height: 12),
               DropdownButtonFormField<String>(
-                initialValue: _experience,
+                value: _experience,
                 decoration: _inputDecoration('トレーニング経験'),
                 items:
                     ['初心者', '中級者', '上級者']
@@ -192,36 +251,64 @@ class _PlanInputSectionState extends State<PlanInputSection> {
               ),
               const SizedBox(height: 8),
 
-              // 日数スライダー
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      '週のトレーニング日数:',
-                      style: TextStyle(color: Colors.grey),
+              // --- 3. スケジュール & 食事 ---
+              const SectionHeader(
+                title: '📅 場所と頻度',
+                icon: Icons.calendar_today,
+              ),
+              const SizedBox(height: 16),
+
+              // 🚨 追加: ジムと自宅のカウンター 🚨
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildCounter(
+                      'ジム (回/週)',
+                      _gymDays,
+                      (val) => setState(() => _gymDays = val),
                     ),
-                    Text(
-                      '${_days.round()}日',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Color(0xFF6A11CB),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: _buildCounter(
+                      '自宅 (回/週)',
+                      _homeDays,
+                      (val) => setState(() => _homeDays = val),
+                    ),
+                  ),
+                ],
+              ),
+
+              // 合計日数の表示と警告
+              const SizedBox(height: 8),
+              Builder(
+                builder: (context) {
+                  final total = _gymDays + _homeDays;
+                  return Column(
+                    children: [
+                      Text(
+                        '合計: 週 $total 回のトレーニング',
+                        style: TextStyle(
+                          color: total > 7 ? Colors.red : Colors.grey.shade700,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                      if (total > 7)
+                        const Text(
+                          '※無理のない範囲（週7回以下）に設定してください',
+                          style: TextStyle(color: Colors.red, fontSize: 12),
+                        ),
+                      if (total == 0)
+                        const Text(
+                          '※最低週1回は設定してください',
+                          style: TextStyle(color: Colors.red, fontSize: 12),
+                        ),
+                    ],
+                  );
+                },
               ),
-              Slider(
-                value: _days,
-                min: 1,
-                max: 7,
-                divisions: 6,
-                label: '${_days.round()}日',
-                activeColor: const Color(0xFF6A11CB),
-                onChanged: (val) => setState(() => _days = val),
-              ),
+
+              const SizedBox(height: 16),
 
               // 食事制限
               TextFormField(
@@ -285,21 +372,138 @@ class _PlanInputSectionState extends State<PlanInputSection> {
     );
   }
 
+  // 🚨 追加: カウンターを作るヘルパーメソッド
+  Widget _buildCounter(String label, int value, Function(int) onChanged) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+            color: Colors.grey,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // マイナスボタン
+              IconButton(
+                icon: const Icon(Icons.remove_circle_outline),
+                onPressed: value > 0 ? () => onChanged(value - 1) : null,
+                color: Colors.grey,
+              ),
+              // 数値
+              Text(
+                '$value',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              // プラスボタン
+              IconButton(
+                icon: const Icon(Icons.add_circle_outline),
+                onPressed: value < 7 ? () => onChanged(value + 1) : null,
+                color: const Color(0xFF6A11CB),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  // 🚨 追加: 「重量 x 回数」の入力行を作るウィジェット
+  Widget _buildStrengthInputRow(
+    String title,
+    int weight,
+    Function(int) onWeightChanged,
+    int reps,
+    Function(int) onRepsChanged,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.grey,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: NumberInputField(
+                label: '重量 (kg)',
+                value: weight,
+                onChanged: onWeightChanged,
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(
+                '×',
+                style: TextStyle(fontSize: 20, color: Colors.grey),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: NumberInputField(
+                label: '回数',
+                value: reps,
+                onChanged: onRepsChanged,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+      ],
+    );
+  }
+
+  // 🚨 修正: _submit メソッド
   void _submit() {
     if (_formKey.currentState!.validate()) {
+      // 合計0回のチェック
+      if (_gymDays + _homeDays == 0) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('トレーニング日数を設定してください')));
+        return;
+      }
+
       final input = UserInput(
         planName: _planName,
         goalType: _goalType,
-        // 簡易的な目標体重ロジック（必要に応じて調整）
+        targetDuration: _targetDuration,
         goalWeight: _goalWeight,
         heightCm: _height,
         weightKg: _weight,
         age: _age,
-        targetDuration: _targetDuration,
         experienceLevel: _experience,
-        availableDays: _days.round(),
+        // 🚨 修正: ここが変わった
+        gymDays: _gymDays,
+        homeDays: _homeDays,
         dietRestriction: _diet,
-        additionalRequest: _additionalRequest, // 追加リクエスト
+        additionalRequest: _additionalRequest,
+        benchPressWeight: _benchWeight,
+        benchPressReps: _benchReps,
+        squatWeight: _squatWeight,
+        squatReps: _squatReps,
+        deadliftWeight: _deadliftWeight,
+        deadliftReps: _deadliftReps,
       );
       widget.onGenerate(input);
     }

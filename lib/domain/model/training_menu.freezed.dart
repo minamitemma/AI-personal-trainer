@@ -15,7 +15,6 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TrainingMenu {
 
-// 🚨 修正: required を削除し @Default('') を追加
  String get title; String get duration; List<DailyWorkout> get workouts;
 /// Create a copy of TrainingMenu
 /// with the given fields replaced by the non-null parameter values.
@@ -215,7 +214,6 @@ class _TrainingMenu implements TrainingMenu {
   const _TrainingMenu({this.title = '', this.duration = '', final  List<DailyWorkout> workouts = const []}): _workouts = workouts;
   factory _TrainingMenu.fromJson(Map<String, dynamic> json) => _$TrainingMenuFromJson(json);
 
-// 🚨 修正: required を削除し @Default('') を追加
 @override@JsonKey() final  String title;
 @override@JsonKey() final  String duration;
  final  List<DailyWorkout> _workouts;
@@ -292,8 +290,7 @@ as List<DailyWorkout>,
 /// @nodoc
 mixin _$DailyWorkout {
 
- String get day; String get focus;// 🚨 修正: Nullまたは欠落の場合に空のリストを使用する 🚨
- List<Exercise> get exercises;
+ String get day; String get focus; List<Exercise> get exercises;
 /// Create a copy of DailyWorkout
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -494,9 +491,7 @@ class _DailyWorkout implements DailyWorkout {
 
 @override@JsonKey() final  String day;
 @override@JsonKey() final  String focus;
-// 🚨 修正: Nullまたは欠落の場合に空のリストを使用する 🚨
  final  List<Exercise> _exercises;
-// 🚨 修正: Nullまたは欠落の場合に空のリストを使用する 🚨
 @override@JsonKey() List<Exercise> get exercises {
   if (_exercises is EqualUnmodifiableListView) return _exercises;
   // ignore: implicit_dynamic_type
@@ -570,8 +565,7 @@ as List<Exercise>,
 /// @nodoc
 mixin _$Exercise {
 
- String get name; int get sets;// intは0をデフォルトにするか、requiredのままにする
- String get repsOrDuration; String get rest; bool get isCompleted;
+ String get name; int get sets; String get repsOrDuration; String get rest; bool get isCompleted;
 /// Create a copy of Exercise
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -774,7 +768,6 @@ class _Exercise implements Exercise {
 
 @override@JsonKey() final  String name;
 @override@JsonKey() final  int sets;
-// intは0をデフォルトにするか、requiredのままにする
 @override@JsonKey() final  String repsOrDuration;
 @override@JsonKey() final  String rest;
 @override@JsonKey() final  bool isCompleted;

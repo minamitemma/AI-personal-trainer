@@ -15,14 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserInput {
 
- String get planName;// ユーザーの目標（例: 増量, 減量, 維持, 筋力向上）
- String get goalType;// 目標体重 (Freezedは初期化時にフィールド名をキャメルケースに修正します)
- int get goalWeight; String get targetDuration;// 現在の身体情報
- int get heightCm; int get weightKg; int get age;// トレーニング経験レベル
- String get experienceLevel;// 週のトレーニング可能日数
- int get availableDays;// 食生活の制約
- String get dietRestriction;// 🚨 追加: ユーザーからの自由な要望
- String get additionalRequest;
+ String get planName; String get goalType; String get targetDuration; int get goalWeight; int get heightCm; int get weightKg; int get age; String get experienceLevel; int get gymDays; int get homeDays; int get benchPressWeight; int get benchPressReps; int get squatWeight; int get squatReps; int get deadliftWeight; int get deadliftReps; String get dietRestriction; String get additionalRequest;
 /// Create a copy of UserInput
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -35,16 +28,16 @@ $UserInputCopyWith<UserInput> get copyWith => _$UserInputCopyWithImpl<UserInput>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserInput&&(identical(other.planName, planName) || other.planName == planName)&&(identical(other.goalType, goalType) || other.goalType == goalType)&&(identical(other.goalWeight, goalWeight) || other.goalWeight == goalWeight)&&(identical(other.targetDuration, targetDuration) || other.targetDuration == targetDuration)&&(identical(other.heightCm, heightCm) || other.heightCm == heightCm)&&(identical(other.weightKg, weightKg) || other.weightKg == weightKg)&&(identical(other.age, age) || other.age == age)&&(identical(other.experienceLevel, experienceLevel) || other.experienceLevel == experienceLevel)&&(identical(other.availableDays, availableDays) || other.availableDays == availableDays)&&(identical(other.dietRestriction, dietRestriction) || other.dietRestriction == dietRestriction)&&(identical(other.additionalRequest, additionalRequest) || other.additionalRequest == additionalRequest));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserInput&&(identical(other.planName, planName) || other.planName == planName)&&(identical(other.goalType, goalType) || other.goalType == goalType)&&(identical(other.targetDuration, targetDuration) || other.targetDuration == targetDuration)&&(identical(other.goalWeight, goalWeight) || other.goalWeight == goalWeight)&&(identical(other.heightCm, heightCm) || other.heightCm == heightCm)&&(identical(other.weightKg, weightKg) || other.weightKg == weightKg)&&(identical(other.age, age) || other.age == age)&&(identical(other.experienceLevel, experienceLevel) || other.experienceLevel == experienceLevel)&&(identical(other.gymDays, gymDays) || other.gymDays == gymDays)&&(identical(other.homeDays, homeDays) || other.homeDays == homeDays)&&(identical(other.benchPressWeight, benchPressWeight) || other.benchPressWeight == benchPressWeight)&&(identical(other.benchPressReps, benchPressReps) || other.benchPressReps == benchPressReps)&&(identical(other.squatWeight, squatWeight) || other.squatWeight == squatWeight)&&(identical(other.squatReps, squatReps) || other.squatReps == squatReps)&&(identical(other.deadliftWeight, deadliftWeight) || other.deadliftWeight == deadliftWeight)&&(identical(other.deadliftReps, deadliftReps) || other.deadliftReps == deadliftReps)&&(identical(other.dietRestriction, dietRestriction) || other.dietRestriction == dietRestriction)&&(identical(other.additionalRequest, additionalRequest) || other.additionalRequest == additionalRequest));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,planName,goalType,goalWeight,targetDuration,heightCm,weightKg,age,experienceLevel,availableDays,dietRestriction,additionalRequest);
+int get hashCode => Object.hash(runtimeType,planName,goalType,targetDuration,goalWeight,heightCm,weightKg,age,experienceLevel,gymDays,homeDays,benchPressWeight,benchPressReps,squatWeight,squatReps,deadliftWeight,deadliftReps,dietRestriction,additionalRequest);
 
 @override
 String toString() {
-  return 'UserInput(planName: $planName, goalType: $goalType, goalWeight: $goalWeight, targetDuration: $targetDuration, heightCm: $heightCm, weightKg: $weightKg, age: $age, experienceLevel: $experienceLevel, availableDays: $availableDays, dietRestriction: $dietRestriction, additionalRequest: $additionalRequest)';
+  return 'UserInput(planName: $planName, goalType: $goalType, targetDuration: $targetDuration, goalWeight: $goalWeight, heightCm: $heightCm, weightKg: $weightKg, age: $age, experienceLevel: $experienceLevel, gymDays: $gymDays, homeDays: $homeDays, benchPressWeight: $benchPressWeight, benchPressReps: $benchPressReps, squatWeight: $squatWeight, squatReps: $squatReps, deadliftWeight: $deadliftWeight, deadliftReps: $deadliftReps, dietRestriction: $dietRestriction, additionalRequest: $additionalRequest)';
 }
 
 
@@ -55,7 +48,7 @@ abstract mixin class $UserInputCopyWith<$Res>  {
   factory $UserInputCopyWith(UserInput value, $Res Function(UserInput) _then) = _$UserInputCopyWithImpl;
 @useResult
 $Res call({
- String planName, String goalType, int goalWeight, String targetDuration, int heightCm, int weightKg, int age, String experienceLevel, int availableDays, String dietRestriction, String additionalRequest
+ String planName, String goalType, String targetDuration, int goalWeight, int heightCm, int weightKg, int age, String experienceLevel, int gymDays, int homeDays, int benchPressWeight, int benchPressReps, int squatWeight, int squatReps, int deadliftWeight, int deadliftReps, String dietRestriction, String additionalRequest
 });
 
 
@@ -72,17 +65,24 @@ class _$UserInputCopyWithImpl<$Res>
 
 /// Create a copy of UserInput
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? planName = null,Object? goalType = null,Object? goalWeight = null,Object? targetDuration = null,Object? heightCm = null,Object? weightKg = null,Object? age = null,Object? experienceLevel = null,Object? availableDays = null,Object? dietRestriction = null,Object? additionalRequest = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? planName = null,Object? goalType = null,Object? targetDuration = null,Object? goalWeight = null,Object? heightCm = null,Object? weightKg = null,Object? age = null,Object? experienceLevel = null,Object? gymDays = null,Object? homeDays = null,Object? benchPressWeight = null,Object? benchPressReps = null,Object? squatWeight = null,Object? squatReps = null,Object? deadliftWeight = null,Object? deadliftReps = null,Object? dietRestriction = null,Object? additionalRequest = null,}) {
   return _then(_self.copyWith(
 planName: null == planName ? _self.planName : planName // ignore: cast_nullable_to_non_nullable
 as String,goalType: null == goalType ? _self.goalType : goalType // ignore: cast_nullable_to_non_nullable
+as String,targetDuration: null == targetDuration ? _self.targetDuration : targetDuration // ignore: cast_nullable_to_non_nullable
 as String,goalWeight: null == goalWeight ? _self.goalWeight : goalWeight // ignore: cast_nullable_to_non_nullable
-as int,targetDuration: null == targetDuration ? _self.targetDuration : targetDuration // ignore: cast_nullable_to_non_nullable
-as String,heightCm: null == heightCm ? _self.heightCm : heightCm // ignore: cast_nullable_to_non_nullable
+as int,heightCm: null == heightCm ? _self.heightCm : heightCm // ignore: cast_nullable_to_non_nullable
 as int,weightKg: null == weightKg ? _self.weightKg : weightKg // ignore: cast_nullable_to_non_nullable
 as int,age: null == age ? _self.age : age // ignore: cast_nullable_to_non_nullable
 as int,experienceLevel: null == experienceLevel ? _self.experienceLevel : experienceLevel // ignore: cast_nullable_to_non_nullable
-as String,availableDays: null == availableDays ? _self.availableDays : availableDays // ignore: cast_nullable_to_non_nullable
+as String,gymDays: null == gymDays ? _self.gymDays : gymDays // ignore: cast_nullable_to_non_nullable
+as int,homeDays: null == homeDays ? _self.homeDays : homeDays // ignore: cast_nullable_to_non_nullable
+as int,benchPressWeight: null == benchPressWeight ? _self.benchPressWeight : benchPressWeight // ignore: cast_nullable_to_non_nullable
+as int,benchPressReps: null == benchPressReps ? _self.benchPressReps : benchPressReps // ignore: cast_nullable_to_non_nullable
+as int,squatWeight: null == squatWeight ? _self.squatWeight : squatWeight // ignore: cast_nullable_to_non_nullable
+as int,squatReps: null == squatReps ? _self.squatReps : squatReps // ignore: cast_nullable_to_non_nullable
+as int,deadliftWeight: null == deadliftWeight ? _self.deadliftWeight : deadliftWeight // ignore: cast_nullable_to_non_nullable
+as int,deadliftReps: null == deadliftReps ? _self.deadliftReps : deadliftReps // ignore: cast_nullable_to_non_nullable
 as int,dietRestriction: null == dietRestriction ? _self.dietRestriction : dietRestriction // ignore: cast_nullable_to_non_nullable
 as String,additionalRequest: null == additionalRequest ? _self.additionalRequest : additionalRequest // ignore: cast_nullable_to_non_nullable
 as String,
@@ -170,10 +170,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String planName,  String goalType,  int goalWeight,  String targetDuration,  int heightCm,  int weightKg,  int age,  String experienceLevel,  int availableDays,  String dietRestriction,  String additionalRequest)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String planName,  String goalType,  String targetDuration,  int goalWeight,  int heightCm,  int weightKg,  int age,  String experienceLevel,  int gymDays,  int homeDays,  int benchPressWeight,  int benchPressReps,  int squatWeight,  int squatReps,  int deadliftWeight,  int deadliftReps,  String dietRestriction,  String additionalRequest)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserInput() when $default != null:
-return $default(_that.planName,_that.goalType,_that.goalWeight,_that.targetDuration,_that.heightCm,_that.weightKg,_that.age,_that.experienceLevel,_that.availableDays,_that.dietRestriction,_that.additionalRequest);case _:
+return $default(_that.planName,_that.goalType,_that.targetDuration,_that.goalWeight,_that.heightCm,_that.weightKg,_that.age,_that.experienceLevel,_that.gymDays,_that.homeDays,_that.benchPressWeight,_that.benchPressReps,_that.squatWeight,_that.squatReps,_that.deadliftWeight,_that.deadliftReps,_that.dietRestriction,_that.additionalRequest);case _:
   return orElse();
 
 }
@@ -191,10 +191,10 @@ return $default(_that.planName,_that.goalType,_that.goalWeight,_that.targetDurat
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String planName,  String goalType,  int goalWeight,  String targetDuration,  int heightCm,  int weightKg,  int age,  String experienceLevel,  int availableDays,  String dietRestriction,  String additionalRequest)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String planName,  String goalType,  String targetDuration,  int goalWeight,  int heightCm,  int weightKg,  int age,  String experienceLevel,  int gymDays,  int homeDays,  int benchPressWeight,  int benchPressReps,  int squatWeight,  int squatReps,  int deadliftWeight,  int deadliftReps,  String dietRestriction,  String additionalRequest)  $default,) {final _that = this;
 switch (_that) {
 case _UserInput():
-return $default(_that.planName,_that.goalType,_that.goalWeight,_that.targetDuration,_that.heightCm,_that.weightKg,_that.age,_that.experienceLevel,_that.availableDays,_that.dietRestriction,_that.additionalRequest);case _:
+return $default(_that.planName,_that.goalType,_that.targetDuration,_that.goalWeight,_that.heightCm,_that.weightKg,_that.age,_that.experienceLevel,_that.gymDays,_that.homeDays,_that.benchPressWeight,_that.benchPressReps,_that.squatWeight,_that.squatReps,_that.deadliftWeight,_that.deadliftReps,_that.dietRestriction,_that.additionalRequest);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -211,10 +211,10 @@ return $default(_that.planName,_that.goalType,_that.goalWeight,_that.targetDurat
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String planName,  String goalType,  int goalWeight,  String targetDuration,  int heightCm,  int weightKg,  int age,  String experienceLevel,  int availableDays,  String dietRestriction,  String additionalRequest)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String planName,  String goalType,  String targetDuration,  int goalWeight,  int heightCm,  int weightKg,  int age,  String experienceLevel,  int gymDays,  int homeDays,  int benchPressWeight,  int benchPressReps,  int squatWeight,  int squatReps,  int deadliftWeight,  int deadliftReps,  String dietRestriction,  String additionalRequest)?  $default,) {final _that = this;
 switch (_that) {
 case _UserInput() when $default != null:
-return $default(_that.planName,_that.goalType,_that.goalWeight,_that.targetDuration,_that.heightCm,_that.weightKg,_that.age,_that.experienceLevel,_that.availableDays,_that.dietRestriction,_that.additionalRequest);case _:
+return $default(_that.planName,_that.goalType,_that.targetDuration,_that.goalWeight,_that.heightCm,_that.weightKg,_that.age,_that.experienceLevel,_that.gymDays,_that.homeDays,_that.benchPressWeight,_that.benchPressReps,_that.squatWeight,_that.squatReps,_that.deadliftWeight,_that.deadliftReps,_that.dietRestriction,_that.additionalRequest);case _:
   return null;
 
 }
@@ -225,27 +225,27 @@ return $default(_that.planName,_that.goalType,_that.goalWeight,_that.targetDurat
 /// @nodoc
 @JsonSerializable()
 
-class _UserInput implements UserInput {
-  const _UserInput({this.planName = '', this.goalType = '', this.goalWeight = 0, this.targetDuration = '', this.heightCm = 0, this.weightKg = 0, this.age = 0, this.experienceLevel = '', this.availableDays = 0, this.dietRestriction = '', this.additionalRequest = ''});
+class _UserInput extends UserInput {
+  const _UserInput({this.planName = '', required this.goalType, this.targetDuration = '', this.goalWeight = 0, this.heightCm = 0, this.weightKg = 0, this.age = 0, required this.experienceLevel, this.gymDays = 0, this.homeDays = 0, this.benchPressWeight = 0, this.benchPressReps = 0, this.squatWeight = 0, this.squatReps = 0, this.deadliftWeight = 0, this.deadliftReps = 0, required this.dietRestriction, this.additionalRequest = ''}): super._();
   factory _UserInput.fromJson(Map<String, dynamic> json) => _$UserInputFromJson(json);
 
 @override@JsonKey() final  String planName;
-// ユーザーの目標（例: 増量, 減量, 維持, 筋力向上）
-@override@JsonKey() final  String goalType;
-// 目標体重 (Freezedは初期化時にフィールド名をキャメルケースに修正します)
-@override@JsonKey() final  int goalWeight;
+@override final  String goalType;
 @override@JsonKey() final  String targetDuration;
-// 現在の身体情報
+@override@JsonKey() final  int goalWeight;
 @override@JsonKey() final  int heightCm;
 @override@JsonKey() final  int weightKg;
 @override@JsonKey() final  int age;
-// トレーニング経験レベル
-@override@JsonKey() final  String experienceLevel;
-// 週のトレーニング可能日数
-@override@JsonKey() final  int availableDays;
-// 食生活の制約
-@override@JsonKey() final  String dietRestriction;
-// 🚨 追加: ユーザーからの自由な要望
+@override final  String experienceLevel;
+@override@JsonKey() final  int gymDays;
+@override@JsonKey() final  int homeDays;
+@override@JsonKey() final  int benchPressWeight;
+@override@JsonKey() final  int benchPressReps;
+@override@JsonKey() final  int squatWeight;
+@override@JsonKey() final  int squatReps;
+@override@JsonKey() final  int deadliftWeight;
+@override@JsonKey() final  int deadliftReps;
+@override final  String dietRestriction;
 @override@JsonKey() final  String additionalRequest;
 
 /// Create a copy of UserInput
@@ -261,16 +261,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserInput&&(identical(other.planName, planName) || other.planName == planName)&&(identical(other.goalType, goalType) || other.goalType == goalType)&&(identical(other.goalWeight, goalWeight) || other.goalWeight == goalWeight)&&(identical(other.targetDuration, targetDuration) || other.targetDuration == targetDuration)&&(identical(other.heightCm, heightCm) || other.heightCm == heightCm)&&(identical(other.weightKg, weightKg) || other.weightKg == weightKg)&&(identical(other.age, age) || other.age == age)&&(identical(other.experienceLevel, experienceLevel) || other.experienceLevel == experienceLevel)&&(identical(other.availableDays, availableDays) || other.availableDays == availableDays)&&(identical(other.dietRestriction, dietRestriction) || other.dietRestriction == dietRestriction)&&(identical(other.additionalRequest, additionalRequest) || other.additionalRequest == additionalRequest));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserInput&&(identical(other.planName, planName) || other.planName == planName)&&(identical(other.goalType, goalType) || other.goalType == goalType)&&(identical(other.targetDuration, targetDuration) || other.targetDuration == targetDuration)&&(identical(other.goalWeight, goalWeight) || other.goalWeight == goalWeight)&&(identical(other.heightCm, heightCm) || other.heightCm == heightCm)&&(identical(other.weightKg, weightKg) || other.weightKg == weightKg)&&(identical(other.age, age) || other.age == age)&&(identical(other.experienceLevel, experienceLevel) || other.experienceLevel == experienceLevel)&&(identical(other.gymDays, gymDays) || other.gymDays == gymDays)&&(identical(other.homeDays, homeDays) || other.homeDays == homeDays)&&(identical(other.benchPressWeight, benchPressWeight) || other.benchPressWeight == benchPressWeight)&&(identical(other.benchPressReps, benchPressReps) || other.benchPressReps == benchPressReps)&&(identical(other.squatWeight, squatWeight) || other.squatWeight == squatWeight)&&(identical(other.squatReps, squatReps) || other.squatReps == squatReps)&&(identical(other.deadliftWeight, deadliftWeight) || other.deadliftWeight == deadliftWeight)&&(identical(other.deadliftReps, deadliftReps) || other.deadliftReps == deadliftReps)&&(identical(other.dietRestriction, dietRestriction) || other.dietRestriction == dietRestriction)&&(identical(other.additionalRequest, additionalRequest) || other.additionalRequest == additionalRequest));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,planName,goalType,goalWeight,targetDuration,heightCm,weightKg,age,experienceLevel,availableDays,dietRestriction,additionalRequest);
+int get hashCode => Object.hash(runtimeType,planName,goalType,targetDuration,goalWeight,heightCm,weightKg,age,experienceLevel,gymDays,homeDays,benchPressWeight,benchPressReps,squatWeight,squatReps,deadliftWeight,deadliftReps,dietRestriction,additionalRequest);
 
 @override
 String toString() {
-  return 'UserInput(planName: $planName, goalType: $goalType, goalWeight: $goalWeight, targetDuration: $targetDuration, heightCm: $heightCm, weightKg: $weightKg, age: $age, experienceLevel: $experienceLevel, availableDays: $availableDays, dietRestriction: $dietRestriction, additionalRequest: $additionalRequest)';
+  return 'UserInput(planName: $planName, goalType: $goalType, targetDuration: $targetDuration, goalWeight: $goalWeight, heightCm: $heightCm, weightKg: $weightKg, age: $age, experienceLevel: $experienceLevel, gymDays: $gymDays, homeDays: $homeDays, benchPressWeight: $benchPressWeight, benchPressReps: $benchPressReps, squatWeight: $squatWeight, squatReps: $squatReps, deadliftWeight: $deadliftWeight, deadliftReps: $deadliftReps, dietRestriction: $dietRestriction, additionalRequest: $additionalRequest)';
 }
 
 
@@ -281,7 +281,7 @@ abstract mixin class _$UserInputCopyWith<$Res> implements $UserInputCopyWith<$Re
   factory _$UserInputCopyWith(_UserInput value, $Res Function(_UserInput) _then) = __$UserInputCopyWithImpl;
 @override @useResult
 $Res call({
- String planName, String goalType, int goalWeight, String targetDuration, int heightCm, int weightKg, int age, String experienceLevel, int availableDays, String dietRestriction, String additionalRequest
+ String planName, String goalType, String targetDuration, int goalWeight, int heightCm, int weightKg, int age, String experienceLevel, int gymDays, int homeDays, int benchPressWeight, int benchPressReps, int squatWeight, int squatReps, int deadliftWeight, int deadliftReps, String dietRestriction, String additionalRequest
 });
 
 
@@ -298,17 +298,24 @@ class __$UserInputCopyWithImpl<$Res>
 
 /// Create a copy of UserInput
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? planName = null,Object? goalType = null,Object? goalWeight = null,Object? targetDuration = null,Object? heightCm = null,Object? weightKg = null,Object? age = null,Object? experienceLevel = null,Object? availableDays = null,Object? dietRestriction = null,Object? additionalRequest = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? planName = null,Object? goalType = null,Object? targetDuration = null,Object? goalWeight = null,Object? heightCm = null,Object? weightKg = null,Object? age = null,Object? experienceLevel = null,Object? gymDays = null,Object? homeDays = null,Object? benchPressWeight = null,Object? benchPressReps = null,Object? squatWeight = null,Object? squatReps = null,Object? deadliftWeight = null,Object? deadliftReps = null,Object? dietRestriction = null,Object? additionalRequest = null,}) {
   return _then(_UserInput(
 planName: null == planName ? _self.planName : planName // ignore: cast_nullable_to_non_nullable
 as String,goalType: null == goalType ? _self.goalType : goalType // ignore: cast_nullable_to_non_nullable
+as String,targetDuration: null == targetDuration ? _self.targetDuration : targetDuration // ignore: cast_nullable_to_non_nullable
 as String,goalWeight: null == goalWeight ? _self.goalWeight : goalWeight // ignore: cast_nullable_to_non_nullable
-as int,targetDuration: null == targetDuration ? _self.targetDuration : targetDuration // ignore: cast_nullable_to_non_nullable
-as String,heightCm: null == heightCm ? _self.heightCm : heightCm // ignore: cast_nullable_to_non_nullable
+as int,heightCm: null == heightCm ? _self.heightCm : heightCm // ignore: cast_nullable_to_non_nullable
 as int,weightKg: null == weightKg ? _self.weightKg : weightKg // ignore: cast_nullable_to_non_nullable
 as int,age: null == age ? _self.age : age // ignore: cast_nullable_to_non_nullable
 as int,experienceLevel: null == experienceLevel ? _self.experienceLevel : experienceLevel // ignore: cast_nullable_to_non_nullable
-as String,availableDays: null == availableDays ? _self.availableDays : availableDays // ignore: cast_nullable_to_non_nullable
+as String,gymDays: null == gymDays ? _self.gymDays : gymDays // ignore: cast_nullable_to_non_nullable
+as int,homeDays: null == homeDays ? _self.homeDays : homeDays // ignore: cast_nullable_to_non_nullable
+as int,benchPressWeight: null == benchPressWeight ? _self.benchPressWeight : benchPressWeight // ignore: cast_nullable_to_non_nullable
+as int,benchPressReps: null == benchPressReps ? _self.benchPressReps : benchPressReps // ignore: cast_nullable_to_non_nullable
+as int,squatWeight: null == squatWeight ? _self.squatWeight : squatWeight // ignore: cast_nullable_to_non_nullable
+as int,squatReps: null == squatReps ? _self.squatReps : squatReps // ignore: cast_nullable_to_non_nullable
+as int,deadliftWeight: null == deadliftWeight ? _self.deadliftWeight : deadliftWeight // ignore: cast_nullable_to_non_nullable
+as int,deadliftReps: null == deadliftReps ? _self.deadliftReps : deadliftReps // ignore: cast_nullable_to_non_nullable
 as int,dietRestriction: null == dietRestriction ? _self.dietRestriction : dietRestriction // ignore: cast_nullable_to_non_nullable
 as String,additionalRequest: null == additionalRequest ? _self.additionalRequest : additionalRequest // ignore: cast_nullable_to_non_nullable
 as String,

@@ -1,5 +1,4 @@
 // ファイルパス: lib/presentation/screens/plan/plan_screen.dart
-
 import 'package:ai_personal_trainer/presentation/screens/plan/sections/plan_input_section.dart';
 import 'package:ai_personal_trainer/presentation/screens/plan/sections/plan_result_section.dart';
 import 'package:ai_personal_trainer/presentation/state/plan_notifier.dart';
@@ -33,6 +32,7 @@ class PlanScreen extends ConsumerWidget {
                     color: Colors.white,
                   ),
                 ),
+                // 🚨 追加: カメラボタン
                 expandedHeight: 120,
                 flexibleSpace: Container(
                   decoration: const BoxDecoration(
