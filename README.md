@@ -1,6 +1,6 @@
 # AI Personal Trainer 
 
-![Flutter](https://img.shields.io/badge/Flutter-3.0%2B-02569B?logo=flutter) ![Dart](https://img.shields.io/badge/Dart-3.0%2B-0175C2?logo=dart) ![Riverpod](https://img.shields.io/badge/State_Management-Riverpod-blue) ![Gemini](https://img.shields.io/badge/AI-Gemini_1.5_Flash-8E75B2)
+![Flutter] ![Dart](https://img.shields.io/badge/Dart-3.0%2B-0175C2?logo=dart) ![Riverpod](https://img.shields.io/badge/State_Management-Riverpod-blue) ![Gemini](https://img.shields.io/badge/AI-Gemini_1.5_Flash-8E75B2)
 
 **AI Personal Trainer** は、大規模言語モデル（LLM）の推論能力と、従来のアプリケーションロジックを融合させた、次世代のフィットネス管理アプリケーションです。
 
