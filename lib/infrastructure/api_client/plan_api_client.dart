@@ -5,15 +5,28 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:ai_personal_trainer/domain/constant/exercise_master.dart';
+// ドメイン層
+import 'package:ai_personal_trainer/domain/constant/exercise_master.dart'; // 🚨 変更: マスターデータ
 import 'package:ai_personal_trainer/domain/logic/nutrition_calculator.dart';
 import 'package:ai_personal_trainer/domain/model/user_input.dart';
 import 'package:ai_personal_trainer/infrastructure/api_client/api_constants.dart';
+// インフラ層
 import 'package:ai_personal_trainer/infrastructure/response/plan_response.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-/// Gemini APIとの通信を専門に行うクライアント
+// --------------------------------------------------
+// Riverpod Provider Definition
+// --------------------------------------------------
+
+final planApiClientProvider = Provider<PlanApiClient>((ref) {
+  return PlanApiClient();
+});
+
+// --------------------------------------------------
+// API Client Class
+// --------------------------------------------------
+
 class PlanApiClient {
   PlanApiClient({Dio? dio})
     : _dio =
@@ -26,6 +39,33 @@ class PlanApiClient {
           );
   final Dio _dio;
 
+  // 🚨 1. 追加: 利用可能な種目リストをフィルタリングするヘルパー
+  List<MasterExerciseData> _getAvailableExercises(UserInput input) {
+    final bool isGymAccess = input.gymDays > 0;
+    final bool isHomeAccess = input.homeDays > 0;
+
+    // ジムと自宅のどちらも0日の場合、すべての自重種目を候補に残す
+    final bool isNoEquipment = !isGymAccess && !isHomeAccess;
+
+    return ExerciseMaster.list.where((ex) {
+      // どちらも未設定なら、自宅OKなものを候補にする
+      if (isNoEquipment) {
+        return ex.equipment == EquipmentTag.homeOnly ||
+            ex.equipment == EquipmentTag.both;
+      }
+
+      // ジム専用種目なのにジムの日がない -> 除外
+      if (ex.equipment == EquipmentTag.gymOnly && !isGymAccess) {
+        return false;
+      }
+      // 自宅専用種目なのに自宅の日がない -> 除外 (※一般的にはジムでも自重はできるので残しても良いが、厳密にするなら除外)
+      if (ex.equipment == EquipmentTag.homeOnly && !isHomeAccess) {
+        return false;
+      }
+      return true;
+    }).toList();
+  }
+
   /// Gemini generateContent APIを呼び出し、プランを生成する
   Future<PlanResponse> generatePlan({required UserInput input}) async {
     final path = 'v1beta/models/${ApiConstants.modelName}:generateContent';
@@ -33,11 +73,19 @@ class PlanApiClient {
     // 1. ユーザー入力をJSONマップに変換
     final inputJsonMap = input.toJson();
 
-    // 2. 目標栄養素の計算 (ロジック層を使用)
+    // 2. 目標栄養素の計算
     final targetMacros = NutritionCalculator.calculateTarget(input);
 
-    // 3. マスタデータリストの取得
-    final exerciseListString = ExerciseMaster.promptList;
+    // 🚨 3. 修正: フィルタリングされた種目リストを生成し、文字列化 🚨
+    final availableExercises = _getAvailableExercises(input);
+
+    // AIに渡すリスト文字列 ("- ID: "bench_press", Name: "...", Equipment: "Gym Only"")
+    final exerciseListString = availableExercises
+        .map(
+          (e) =>
+              '- ID: "${e.id}", Name: "${e.name}", Equipment: "${e.equipment.label}"',
+        )
+        .join('\n');
 
     // --- プロンプト構成要素の作成 ---
 
@@ -99,7 +147,7 @@ class PlanApiClient {
       ''';
     }
 
-    // D. アドバイス/実績フィードバック (UserInputに含まれている場合)
+    // D. アドバイス/実績フィードバック
     String advicePrompt = '';
     if (input.additionalRequest.isNotEmpty) {
       advicePrompt =
@@ -122,10 +170,13 @@ Your task is to generate a personalized plan based on the data below.
 2. STRICTLY follow this JSON schema structure and Key Names:
 $jsonSchemaExample
 
-3. [ALLOWED EXERCISE LIST]
-For the 'name' field in exercises, prefer using the IDs from this list:
-$exerciseListString
-If no suitable ID exists, use a common English name.
+3. [ALLOWED EXERCISE LIST & EQUIPMENT]
+You MUST select exercises ONLY from the list below. This list has been filtered based on the user's available equipment (Gym/Home).
+Do NOT suggest exercises that are not in this list or require equipment the user does not have.
+
+$exerciseListString  <-- 🚨 フィルタリング後のリストを注入
+
+For the 'name' field in exercises, prefer using the IDs from this list.
 
 $macroPrompt
 
@@ -249,8 +300,3 @@ $inputJsonMap
     }
   }
 }
-
-// Riverpod Provider
-final planApiClientProvider = Provider<PlanApiClient>((ref) {
-  return PlanApiClient();
-});

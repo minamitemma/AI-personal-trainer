@@ -10,21 +10,27 @@ enum MuscleGroup {
   abs('腹筋'),
   cardio('有酸素/全身');
 
-  // 🚨 修正: コンストラクタをフィールドより先に書く
   const MuscleGroup(this.label);
-
   final String label;
 }
 
 /// 種目のタイプ定義
 enum ExerciseType {
-  compound('多関節 (コンパウンド)'), // 高重量・基本
-  isolation('単関節 (アイソレーション)'), // 仕上げ・特定部位
+  compound('多関節 (コンパウンド)'),
+  isolation('単関節 (アイソレーション)'),
   cardio('有酸素・HIIT');
 
-  // 🚨 修正: コンストラクタをフィールドより先に書く
   const ExerciseType(this.label);
+  final String label;
+}
 
+/// 🚨 NEW: 実施場所・機材のタグ定義
+enum EquipmentTag {
+  gymOnly('ジム専用 (バーベル/マシン)'),
+  homeOnly('自宅専用 (自重/小物)'),
+  both('どちらも (ダンベル/自重)');
+
+  const EquipmentTag(this.label);
   final String label;
 }
 
@@ -36,6 +42,7 @@ class MasterExerciseData {
     required this.videoQuery,
     required this.target,
     required this.type,
+    required this.equipment,
   });
   final String id;
   final String name;
@@ -43,10 +50,12 @@ class MasterExerciseData {
   final String videoQuery;
   final MuscleGroup target;
   final ExerciseType type;
+  // 🚨 追加
+  final EquipmentTag equipment;
 }
 
 class ExerciseMaster {
-  // AIプロンプト用リスト生成
+  // AIプロンプト用リスト生成 (フィルタリング前)
   static String get promptList {
     return list.map((e) => '- ID: "${e.id}", Name: "${e.name}"').join('\n');
   }
@@ -69,11 +78,9 @@ class ExerciseMaster {
     }
   }
 
-  // マスターデータリスト
+  // 🚨 全てのデータに equipment タグを付与した完全リスト 🚨
   static const List<MasterExerciseData> list = [
-    // ==========================================
-    // 胸 (Chest)
-    // ==========================================
+    // --- 胸 (Chest) ---
     MasterExerciseData(
       id: 'bench_press',
       name: 'バーベル・ベンチプレス',
@@ -81,6 +88,7 @@ class ExerciseMaster {
       videoQuery: 'バーベルベンチプレス フォーム 解説',
       target: MuscleGroup.chest,
       type: ExerciseType.compound,
+      equipment: EquipmentTag.gymOnly,
     ),
     MasterExerciseData(
       id: 'incline_bench_press',
@@ -89,6 +97,7 @@ class ExerciseMaster {
       videoQuery: 'インクラインベンチプレス 角度 フォーム',
       target: MuscleGroup.chest,
       type: ExerciseType.compound,
+      equipment: EquipmentTag.gymOnly,
     ),
     MasterExerciseData(
       id: 'dumbbell_press',
@@ -97,6 +106,7 @@ class ExerciseMaster {
       videoQuery: 'ダンベルプレス フォーム 解説',
       target: MuscleGroup.chest,
       type: ExerciseType.compound,
+      equipment: EquipmentTag.both,
     ),
     MasterExerciseData(
       id: 'push_up',
@@ -105,6 +115,7 @@ class ExerciseMaster {
       videoQuery: '腕立て伏せ 正しいやり方',
       target: MuscleGroup.chest,
       type: ExerciseType.compound,
+      equipment: EquipmentTag.homeOnly,
     ),
     MasterExerciseData(
       id: 'dips',
@@ -113,6 +124,7 @@ class ExerciseMaster {
       videoQuery: 'ディップス 大胸筋 フォーム',
       target: MuscleGroup.chest,
       type: ExerciseType.compound,
+      equipment: EquipmentTag.both,
     ),
     MasterExerciseData(
       id: 'dumbbell_fly',
@@ -121,6 +133,7 @@ class ExerciseMaster {
       videoQuery: 'ダンベルフライ フォーム',
       target: MuscleGroup.chest,
       type: ExerciseType.isolation,
+      equipment: EquipmentTag.both,
     ),
     MasterExerciseData(
       id: 'cable_crossover',
@@ -129,11 +142,9 @@ class ExerciseMaster {
       videoQuery: 'ケーブルクロスオーバー フォーム',
       target: MuscleGroup.chest,
       type: ExerciseType.isolation,
+      equipment: EquipmentTag.gymOnly,
     ),
-
-    // ==========================================
-    // 背中 (Back)
-    // ==========================================
+    // --- 背中 (Back) ---
     MasterExerciseData(
       id: 'deadlift',
       name: 'デッドリフト',
@@ -141,6 +152,7 @@ class ExerciseMaster {
       videoQuery: 'デッドリフト フォーム 初心者',
       target: MuscleGroup.back,
       type: ExerciseType.compound,
+      equipment: EquipmentTag.gymOnly,
     ),
     MasterExerciseData(
       id: 'chin_up',
@@ -149,6 +161,7 @@ class ExerciseMaster {
       videoQuery: '懸垂 できない 初心者',
       target: MuscleGroup.back,
       type: ExerciseType.compound,
+      equipment: EquipmentTag.both,
     ),
     MasterExerciseData(
       id: 'lat_pulldown',
@@ -157,6 +170,7 @@ class ExerciseMaster {
       videoQuery: 'ラットプルダウン 背中 効かせ方',
       target: MuscleGroup.back,
       type: ExerciseType.compound,
+      equipment: EquipmentTag.gymOnly,
     ),
     MasterExerciseData(
       id: 'bent_over_row',
@@ -165,6 +179,7 @@ class ExerciseMaster {
       videoQuery: 'ベントオーバーロウ フォーム',
       target: MuscleGroup.back,
       type: ExerciseType.compound,
+      equipment: EquipmentTag.gymOnly,
     ),
     MasterExerciseData(
       id: 'one_arm_row',
@@ -173,6 +188,7 @@ class ExerciseMaster {
       videoQuery: 'ワンハンドローイング フォーム',
       target: MuscleGroup.back,
       type: ExerciseType.compound,
+      equipment: EquipmentTag.both,
     ),
     MasterExerciseData(
       id: 'seated_row',
@@ -181,6 +197,7 @@ class ExerciseMaster {
       videoQuery: 'シーテッドローイング マシン 使い方',
       target: MuscleGroup.back,
       type: ExerciseType.compound,
+      equipment: EquipmentTag.gymOnly,
     ),
     MasterExerciseData(
       id: 'back_extension',
@@ -189,11 +206,9 @@ class ExerciseMaster {
       videoQuery: 'バックエクステンション やり方',
       target: MuscleGroup.back,
       type: ExerciseType.isolation,
+      equipment: EquipmentTag.both,
     ),
-
-    // ==========================================
-    // 脚 (Legs)
-    // ==========================================
+    // --- 脚 (Legs) ---
     MasterExerciseData(
       id: 'squat',
       name: 'バーベル・スクワット',
@@ -201,6 +216,7 @@ class ExerciseMaster {
       videoQuery: 'スクワット フォーム 解説',
       target: MuscleGroup.legs,
       type: ExerciseType.compound,
+      equipment: EquipmentTag.gymOnly,
     ),
     MasterExerciseData(
       id: 'goblet_squat',
@@ -209,6 +225,7 @@ class ExerciseMaster {
       videoQuery: 'ゴブレットスクワット やり方',
       target: MuscleGroup.legs,
       type: ExerciseType.compound,
+      equipment: EquipmentTag.both,
     ),
     MasterExerciseData(
       id: 'leg_press',
@@ -217,6 +234,7 @@ class ExerciseMaster {
       videoQuery: 'レッグプレス 足の位置',
       target: MuscleGroup.legs,
       type: ExerciseType.compound,
+      equipment: EquipmentTag.gymOnly,
     ),
     MasterExerciseData(
       id: 'lunge',
@@ -225,6 +243,7 @@ class ExerciseMaster {
       videoQuery: 'ランジ フォーム',
       target: MuscleGroup.legs,
       type: ExerciseType.compound,
+      equipment: EquipmentTag.both,
     ),
     MasterExerciseData(
       id: 'romanian_deadlift',
@@ -233,6 +252,7 @@ class ExerciseMaster {
       videoQuery: 'ルーマニアンデッドリフト フォーム',
       target: MuscleGroup.legs,
       type: ExerciseType.compound,
+      equipment: EquipmentTag.gymOnly,
     ),
     MasterExerciseData(
       id: 'leg_extension',
@@ -241,6 +261,7 @@ class ExerciseMaster {
       videoQuery: 'レッグエクステンション 使い方',
       target: MuscleGroup.legs,
       type: ExerciseType.isolation,
+      equipment: EquipmentTag.gymOnly,
     ),
     MasterExerciseData(
       id: 'leg_curl',
@@ -249,6 +270,7 @@ class ExerciseMaster {
       videoQuery: 'レッグカール マシン 使い方',
       target: MuscleGroup.legs,
       type: ExerciseType.isolation,
+      equipment: EquipmentTag.gymOnly,
     ),
     MasterExerciseData(
       id: 'calf_raise',
@@ -257,11 +279,9 @@ class ExerciseMaster {
       videoQuery: 'カーフレイズ やり方',
       target: MuscleGroup.legs,
       type: ExerciseType.isolation,
+      equipment: EquipmentTag.both,
     ),
-
-    // ==========================================
-    // 肩 (Shoulders)
-    // ==========================================
+    // --- 肩 (Shoulders) ---
     MasterExerciseData(
       id: 'shoulder_press',
       name: 'ショルダープレス (バーベル/ダンベル)',
@@ -269,6 +289,7 @@ class ExerciseMaster {
       videoQuery: 'ショルダープレス フォーム',
       target: MuscleGroup.shoulders,
       type: ExerciseType.compound,
+      equipment: EquipmentTag.both,
     ),
     MasterExerciseData(
       id: 'side_raise',
@@ -277,6 +298,7 @@ class ExerciseMaster {
       videoQuery: 'サイドレイズ 肩に効かせる',
       target: MuscleGroup.shoulders,
       type: ExerciseType.isolation,
+      equipment: EquipmentTag.both,
     ),
     MasterExerciseData(
       id: 'front_raise',
@@ -285,6 +307,7 @@ class ExerciseMaster {
       videoQuery: 'フロントレイズ ダンベル',
       target: MuscleGroup.shoulders,
       type: ExerciseType.isolation,
+      equipment: EquipmentTag.both,
     ),
     MasterExerciseData(
       id: 'rear_delt_fly',
@@ -293,11 +316,9 @@ class ExerciseMaster {
       videoQuery: 'リアデルトフライ ダンベル',
       target: MuscleGroup.shoulders,
       type: ExerciseType.isolation,
+      equipment: EquipmentTag.both,
     ),
-
-    // ==========================================
-    // 腕 (Arms)
-    // ==========================================
+    // --- 腕 (Arms) ---
     MasterExerciseData(
       id: 'barbell_curl',
       name: 'バーベルカール',
@@ -305,6 +326,7 @@ class ExerciseMaster {
       videoQuery: 'バーベルカール フォーム',
       target: MuscleGroup.arms,
       type: ExerciseType.isolation,
+      equipment: EquipmentTag.gymOnly,
     ),
     MasterExerciseData(
       id: 'dumbbell_curl',
@@ -313,6 +335,7 @@ class ExerciseMaster {
       videoQuery: 'ダンベルカール 効かせ方',
       target: MuscleGroup.arms,
       type: ExerciseType.isolation,
+      equipment: EquipmentTag.both,
     ),
     MasterExerciseData(
       id: 'tricep_pushdown',
@@ -321,6 +344,7 @@ class ExerciseMaster {
       videoQuery: 'ケーブルプッシュダウン フォーム',
       target: MuscleGroup.arms,
       type: ExerciseType.isolation,
+      equipment: EquipmentTag.gymOnly,
     ),
     MasterExerciseData(
       id: 'french_press',
@@ -329,11 +353,9 @@ class ExerciseMaster {
       videoQuery: 'フレンチプレス ダンベル やり方',
       target: MuscleGroup.arms,
       type: ExerciseType.isolation,
+      equipment: EquipmentTag.both,
     ),
-
-    // ==========================================
-    // 腹筋 (Abs)
-    // ==========================================
+    // --- 腹筋 (Abs) ---
     MasterExerciseData(
       id: 'plank',
       name: 'プランク',
@@ -341,6 +363,7 @@ class ExerciseMaster {
       videoQuery: 'プランク 正しいやり方',
       target: MuscleGroup.abs,
       type: ExerciseType.isolation,
+      equipment: EquipmentTag.homeOnly,
     ),
     MasterExerciseData(
       id: 'crunch',
@@ -349,6 +372,7 @@ class ExerciseMaster {
       videoQuery: 'クランチ 腹筋 フォーム',
       target: MuscleGroup.abs,
       type: ExerciseType.isolation,
+      equipment: EquipmentTag.homeOnly,
     ),
     MasterExerciseData(
       id: 'leg_raise',
@@ -357,6 +381,7 @@ class ExerciseMaster {
       videoQuery: 'レッグレイズ 腹筋 下腹部',
       target: MuscleGroup.abs,
       type: ExerciseType.isolation,
+      equipment: EquipmentTag.homeOnly,
     ),
     MasterExerciseData(
       id: 'ab_roller',
@@ -365,11 +390,9 @@ class ExerciseMaster {
       videoQuery: 'アブローラー 初心者',
       target: MuscleGroup.abs,
       type: ExerciseType.compound,
+      equipment: EquipmentTag.homeOnly,
     ),
-
-    // ==========================================
-    // 有酸素 / 全身 (Cardio/Full Body)
-    // ==========================================
+    // --- 有酸素 / 全身 (Cardio/Full Body) ---
     MasterExerciseData(
       id: 'burpee',
       name: 'バーピー',
@@ -377,6 +400,7 @@ class ExerciseMaster {
       videoQuery: 'バーピー ジャンプ なし',
       target: MuscleGroup.cardio,
       type: ExerciseType.cardio,
+      equipment: EquipmentTag.homeOnly,
     ),
     MasterExerciseData(
       id: 'hiit',
@@ -385,6 +409,7 @@ class ExerciseMaster {
       videoQuery: 'HIIT 初心者 5分',
       target: MuscleGroup.cardio,
       type: ExerciseType.cardio,
+      equipment: EquipmentTag.homeOnly,
     ),
     MasterExerciseData(
       id: 'treadmill',
@@ -393,14 +418,7 @@ class ExerciseMaster {
       videoQuery: 'ランニングマシン 使い方',
       target: MuscleGroup.cardio,
       type: ExerciseType.cardio,
-    ),
-    MasterExerciseData(
-      id: 'bike',
-      name: 'エアロバイク(サイクリング)',
-      keywords: ['自転車', 'エアロバイク', 'サイクリング'],
-      videoQuery: 'エアロバイク 使い方',
-      target: MuscleGroup.cardio,
-      type: ExerciseType.cardio,
+      equipment: EquipmentTag.gymOnly,
     ),
   ];
 }
